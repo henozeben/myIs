@@ -24,8 +24,9 @@ namespace myIS
 
         private void button4_Click(object sender, EventArgs e)
         {
-            controler.returnToInputsForm(this, textBox1.Text);
-            
+            Application.Exit();
+
+
 
         }
         public void setText(string s)
@@ -102,6 +103,11 @@ namespace myIS
         private void button2_Click(object sender, EventArgs e)
         {
             ToShowDomain();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            controler.returnToInputsForm(this, textBox1.Text);
         }
     }
 }
