@@ -97,11 +97,18 @@ namespace myIS.Model
 
         public void updateUser(OleDbConnection conn,string strsql)
         {
-            conn.Open();
-            OleDbCommand command = new OleDbCommand(strsql, conn);
-            command.ExecuteNonQuery();
-            conn.Close();
-            MessageBox.Show("Successful Updating");
+            try
+            {
+                conn.Open();
+                OleDbCommand command = new OleDbCommand(strsql, conn);
+                command.ExecuteNonQuery();
+                conn.Close();
+                MessageBox.Show("Successful Updating");
+            }
+            catch
+            {
+                MessageBox.Show("you can't update user didn't exist");
+            }
         }
 
         public void updateDomain(string strSql,OleDbConnection conn)

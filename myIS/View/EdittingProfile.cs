@@ -36,37 +36,45 @@ namespace myIS
             String strSql = "SELECT * FROM [users] WHERE [email]= '" + Mail + "'";
             OleDbConnection conn = new OleDbConnection(dbprovider);
             MySearchList sl = new MySearchList(controler);
-
-            conn.Open();
-            OleDbCommand cmd = new OleDbCommand(strSql, conn);
-            OleDbDataReader reader = cmd.ExecuteReader();
-            reader.Read();
-            fn.Text = reader.GetString(1);
-            ln.Text = reader.GetString(2);
-            city.Text = reader.GetString(3);
-            street.Text = reader.GetString(4);
-            string t = reader.GetString(5);
-            string[] telArray = t.Split('-');
-            firBox.Text = telArray[0];
-            tel.Text = telArray[1];
-            age.Text = reader.GetInt32(6).ToString();
-            genbox.Text = reader.GetString(7);
-            meter.Text = reader.GetString(8);
-            pass.Text = reader.GetString(9);
-            string birth = reader.GetString(10);
-            string[] birthDate = birth.Split('/');
-            dayBox1.Text = birthDate[0];
-            monBox2.Text = birthDate[1];
-            year.Text = birthDate[2];
-            smok.Checked = reader.GetBoolean(reader.GetOrdinal("smoking"));
-            havePet.Checked = reader.GetBoolean(12);
-            org.Text = reader.GetInt32(13).ToString();
-            education.Text = reader.GetString(14);
-            dustAllergy.Checked = reader.GetBoolean(reader.GetOrdinal("dustellrgy"));
-            perBox4.Checked = reader.GetBoolean(reader.GetOrdinal("perfumellergy"));
-            mynote.Text = (reader["notes"].ToString());
-            conn.Close();
-
+            try
+            {
+                conn.Open();
+                OleDbCommand cmd = new OleDbCommand(strSql, conn);
+                OleDbDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                fn.Text = reader.GetString(1);
+                ln.Text = reader.GetString(2);
+                city.Text = reader.GetString(3);
+                street.Text = reader.GetString(4);
+                string t = reader.GetString(5);
+                string[] telArray = t.Split('-');
+                firBox.Text = telArray[0];
+                tel.Text = telArray[1];
+                age.Text = reader.GetInt32(6).ToString();
+                genbox.Text = reader.GetString(7);
+                meter.Text = reader.GetString(8);
+                pass.Text = reader.GetString(9);
+                string birth = reader.GetString(10);
+                string[] birthDate = birth.Split('/');
+                dayBox1.Text = birthDate[0];
+                monBox2.Text = birthDate[1];
+                year.Text = birthDate[2];
+                smok.Checked = reader.GetBoolean(reader.GetOrdinal("smoking"));
+                havePet.Checked = reader.GetBoolean(12);
+                org.Text = reader.GetInt32(13).ToString();
+                education.Text = reader.GetString(14);
+                dustAllergy.Checked = reader.GetBoolean(reader.GetOrdinal("dustellrgy"));
+                perBox4.Checked = reader.GetBoolean(reader.GetOrdinal("perfumellergy"));
+                mynote.Text = (reader["notes"].ToString());
+                conn.Close();
+                MainForm mf = new MainForm(controler);
+                this.Hide();
+                mf.Show();
+            }
+            catch
+            {
+                MessageBox.Show("can't update");
+            }
 
         }
 
@@ -87,7 +95,6 @@ namespace myIS
             t12 = org.Text + "";
             t13 = education.Text + "";
             t14 = mynote.Text + "";
-
             int smook = 0;
             int pet = 0;
             int pur = 0;
