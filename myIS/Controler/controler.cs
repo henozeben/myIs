@@ -14,11 +14,11 @@ namespace myIS.Controler
 {
     public class controler
     {
-         public model m;
+        public model m;
 
 
 
-        public controler() { m = new model(this);}
+        public controler() { m = new model(this); }
 
         public void startApp()
         {
@@ -31,7 +31,7 @@ namespace myIS.Controler
         public void connactUser(string mail, string pass)
         {
 
-                
+
         }
 
 
@@ -45,7 +45,7 @@ namespace myIS.Controler
             string city = "";
             string street = "";
             string cost = "";
-            
+
             String strSql = "SELECT * FROM [domain] ";
             OleDbConnection conn = m.getGeneralSearch();
             try
@@ -75,27 +75,27 @@ namespace myIS.Controler
         }
 
 
-        public void setNewRecord(Record R,string t1, string t2, string t3, string t4, string t5, string t6, string t7, string t8, string t9, string t10, string t11, string t12, string t13, string t14, bool smook, bool pet, bool pur, bool drust, string s, string strSql)
+        public void setNewRecord(Record R, string t1, string t2, string t3, string t4, string t5, string t6, string t7, string t8, string t9, string t10, string t11, string t12, string t13, string t14, bool smook, bool pet, bool pur, bool drust, string s, string strSql)
         {
             string dbprovider = m.getDBprovider();
             OleDbConnection conn = new OleDbConnection(dbprovider);
             OleDbCommand dbCmd = new OleDbCommand(strSql, conn);
             conn.Open();
-            m.setRecord(dbCmd,t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, smook, pet, pur, drust, s, strSql);
-            
+            m.setRecord(dbCmd, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, smook, pet, pur, drust, s, strSql);
+
             R.Hide();
             Success_insert fOk = new Success_insert(this);
             fOk.UpdateStatusSuccess(t1, t3);
 
             fOk.Show();
             conn.Close();
-            
+
         }
 
-        public void profileToDelete(EdittingProfile ed,string mail)
+        public void profileToDelete(EdittingProfile ed, string mail)
         {
-            m.deleteProfile(ed,mail);
-            
+            m.deleteProfile(ed, mail);
+
         }
 
         public void getDataFromUser(EdittingProfile ed, string Mail)
@@ -108,30 +108,31 @@ namespace myIS.Controler
             conn.Open();
             OleDbCommand cmd = new OleDbCommand(strSql, conn);
             OleDbDataReader reader = cmd.ExecuteReader();
-            
+
         }
 
 
         public void updateUser(string t1, string t2, string t3, string t4, string t5, string t6, string t7, string t8, string t9, string t10, string t11, string t12, string t13, string t14, int smook, int pet, int pur, int drust)
         {
             OleDbConnection conn = new OleDbConnection(m.getDBprovider());
-            
+
             string strSql = "UPDATE [users] SET [fname]='" + t1 + "',[lname]='" + t2 + "',[city]='" + t8 + "',[street]='" + t9 + "',[telephone]='" + t10 + "',[age]='" + Int32.Parse(t6) + "',[gender]='" + t7 + "',[meterial_status]='" + t5 + "',[password]='" + t3 + "',[birth]='" + t4 + "',[smoking]='" + smook + "',[have_pet]='" + pet + "',[organized]='" + Int32.Parse(t12) + "',[educatin]='" + t13 + "',[dustellrgy]='" + drust + "',[perfumellergy]='" + pur + "',[notes]='" + t14 + "' WHERE [email]='" + t11 + "'";
 
-            m.updateUser(conn,strSql);
-            
+            m.updateUser(conn, strSql);
+
 
         }
 
 
         public void updateDomain(Domains D, string s)
         {
-            UpdateDomain fud = new UpdateDomain(this,s);
+            UpdateDomain fud = new UpdateDomain(this, s);
             D.Hide();
             fud.Show();
         }
 
-        public void returnToInputsForm(Domains D,String S){
+        public void returnToInputsForm(Domains D, String S)
+        {
             InputsForm fi = new InputsForm(this);
             D.Hide();
             fi.setLabel(S);
@@ -158,8 +159,8 @@ namespace myIS.Controler
         {
             string strSql = "Update [domain] set [date]='" + t2.ToString() + "', [description]='" + t3.ToString() + "', [maxNumOfPartner]='" + long.Parse(t5) + "', [city]='" + t4.ToString() + "', [street]='" + t6.ToString() + "', [maker_date]='" + t8.ToString() + "', [cost]='" + long.Parse(t7) + "' WHERE domain_id=" + did;
             conn.Open();
-            m.updateDomain(strSql,conn);
-            
+            m.updateDomain(strSql, conn);
+
             conn.Close();
         }
 
@@ -186,47 +187,86 @@ namespace myIS.Controler
             DED.Hide();
             np.Show();
         }
-        public void DeleteDomain(long domainId,string s,DeleteExistDomain DED)
+        public void DeleteDomain(long domainId, string s, DeleteExistDomain DED)
         {
             string dbprovider = m.getDBprovider();
-           
-            OleDbConnection conn = new OleDbConnection(dbprovider);
 
-            try
+            OleDbConnection conn = new OleDbConnection(dbprovider);
+            if (ifCanDelete(domainId))
             {
-                string query = "select * from [domain] where [domain_id]=" + domainId;
-                conn.Open();
-                OleDbCommand cmd = new OleDbCommand(query, conn);
-                System.Data.OleDb.OleDbDataAdapter tableAdapter = new System.Data.OleDb.OleDbDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                tableAdapter.Fill(dt);
-                conn.Close();
-                string query_2 = "delete from [domain] where [domain_id]=" + domainId;
-                conn.Open();
-                OleDbCommand cmd_2 = new OleDbCommand(query_2, conn);
-                DialogResult dialogResult = MessageBox.Show("if you Sure you want to delete this domain prees yes else press no", "Some Title", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    cmd_2.ExecuteNonQuery();
-                    MessageBox.Show("successful deleting:)");
-                    InputsForm fef = new InputsForm(this);
-                    fef.setLabel(s);
-                    DED.Hide();
-                    fef.Show();
-                }
-                else
-                {
-                    DED.Show();
-                }
-                conn.Close();
+                MessageBox.Show("can't delete domain have partners");
+                InputsForm fef = new InputsForm(this);
+                fef.setLabel(s);
+                DED.Hide();
+                fef.Show();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("can't delete Or user didn't exist");
+                try
+                {
+                    string query = "select * from [domain] where [domain_id]=" + domainId;
+                    conn.Open();
+                    OleDbCommand cmd = new OleDbCommand(query, conn);
+                    System.Data.OleDb.OleDbDataAdapter tableAdapter = new System.Data.OleDb.OleDbDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    tableAdapter.Fill(dt);
+                    conn.Close();
+                    string query_2 = "delete from [domain] where [domain_id]=" + domainId;
+                    conn.Open();
+                    OleDbCommand cmd_2 = new OleDbCommand(query_2, conn);
+                    DialogResult dialogResult = MessageBox.Show("if you Sure you want to delete this domain prees yes else press no", "Some Title", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        cmd_2.ExecuteNonQuery();
+                        MessageBox.Show("successful deleting:)");
+                        InputsForm fef = new InputsForm(this);
+                        fef.setLabel(s);
+                        DED.Hide();
+                        fef.Show();
+                    }
+                    else
+                    {
+                        DED.Show();
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("can't delete Or user didn't exist");
+                }
             }
         }
 
-
+        private bool ifCanDelete(long id)
+        {
+            int i = 0;
+            string dbprovider = m.getDBprovider();
+            OleDbConnection conn = new OleDbConnection(dbprovider);
+            string strSql = "select * from [partnerTable] where [domainId]=" + id;
+            try
+            {
+                conn.Open();
+                OleDbCommand cmd = new OleDbCommand(strSql, conn);
+                OleDbDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    i++;
+                }
+                if (i == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("domain didn't exist");
+            }
+            return false;
+        }
         public void returnToDomain(DomainsUserList DUL, string S)
         {
             Domains fd = new Domains(this);
@@ -261,7 +301,8 @@ namespace myIS.Controler
             mf.Show();
         }
 
-        public void returnToInputsForm(SuccessSearch SS,string s){
+        public void returnToInputsForm(SuccessSearch SS, string s)
+        {
             InputsForm fi = new InputsForm(this);
             fi.setLabel(s);
             SS.Hide();

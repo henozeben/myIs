@@ -93,15 +93,16 @@ namespace myIS
                 {
                     MessageBox.Show("there is no partner");
                 }
-             /*   conn.Open();
-            /*    string strSq2 = "select * from [domain] where [domain_id] = " + long.Parse(item);
+               conn.Open();
+               string strSq2 = "select * from [domain] where [domain_id] = " + long.Parse(item);
                 OleDbCommand cmd2 = new OleDbCommand(strSq2, conn);
                 OleDbDataReader reader2 = cmd2.ExecuteReader();
+                reader2.Read();
                 if (!PrtnerUser.Contains(reader2.GetString(4).ToString()))
                 {
                     PrtnerUser.Add(reader2.GetString(4).ToString());
                 }
-                conn.Close();*/
+                conn.Close();
             }
             
             

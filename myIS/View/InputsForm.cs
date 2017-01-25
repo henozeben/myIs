@@ -71,8 +71,11 @@ namespace myIS
         {
             EdittingProfile fmd = new EdittingProfile(controler);
             fmd.setMail(ownertext.Text);
-            this.Hide();
-            fmd.Show();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

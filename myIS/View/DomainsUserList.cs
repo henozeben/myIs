@@ -16,9 +16,9 @@ namespace myIS
     {
         controler controler;
         string show;
-        public DomainsUserList(string s,controler c)
+        public DomainsUserList(string s, controler c)
         {
-            controler=c;
+            controler = c;
             InitializeComponent();
             textBox2.Text = s;
             textBox2.Visible = false;
@@ -83,7 +83,7 @@ namespace myIS
         {
             string dbprovider = @"Provider=Microsoft.Jet.OLEDB.4.0;" +
                 @"Data source= db\" + @"partners.mdb";
-            String strSql = "SELECT * FROM [partnerTable] WHERE [domainId]= '" + long.Parse(show) + "'";
+            String strSql = "SELECT * FROM [partnerTable] WHERE [domainId]= " + long.Parse(show);
             OleDbConnection conn = new OleDbConnection(dbprovider);
             List<string> mls = new List<string>();
             try
@@ -105,24 +105,28 @@ namespace myIS
         }
         private void ToShowFromUsers(List<string> myls)
         {
-            string fname, lname, city, age;
+            string mfname, mlname, mcity, mage;
             string dbprovider = @"Provider=Microsoft.Jet.OLEDB.4.0;" +
                @"Data source= db\" + @"partners.mdb";
-            OleDbConnection conn = new OleDbConnection(dbprovider);
-            PartnersList pls = new PartnersList(textBox2.Text,controler);
+
+            PartnersList pls = new PartnersList(textBox2.Text, controler);
             try
             {
-                foreach (string item in myls)
+                foreach (var item in myls)
                 {
-                    String strSql = "SELECT * FROM [users] WHERE [email]= '" + item + "'";
+                    string Mail = (string)item;
+                    //  String strSql = "SELECT * FROM [users] WHERE [email]= '" + item + "'";
+                    String strSql = "SELECT * FROM [users] WHERE [email]= '" + Mail + "'";
+                    OleDbConnection conn = new OleDbConnection(dbprovider);
                     conn.Open();
                     OleDbCommand cmd = new OleDbCommand(strSql, conn);
                     OleDbDataReader reader = cmd.ExecuteReader();
-                    fname = reader.GetString(1);
-                    lname = reader.GetString(2);
-                    city = reader.GetString(3);
-                    age = reader.GetValue(6).ToString();
-                    pls.addToList(item, fname, lname, city, age);
+                    reader.Read();
+                    mfname = reader.GetString(1);
+                    mlname = reader.GetString(2);
+                    mcity = reader.GetString(3).ToString();
+                    mage = reader.GetValue(6).ToString();
+                    pls.addToList(Mail, mfname, mlname, mcity, mage);
                     conn.Close();
                 }
                 this.Hide();
@@ -150,7 +154,7 @@ namespace myIS
 
         private void button2_Click(object sender, EventArgs e)
         {
-            controler.returnToDomain(this,textBox2.Text);
+            controler.returnToDomain(this, textBox2.Text);
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
