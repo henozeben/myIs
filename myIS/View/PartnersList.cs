@@ -34,7 +34,8 @@ namespace myIS
 
         private void button1_Click(object sender, EventArgs e)
         {
-            DomainsUserList fdus = new myIS.DomainsUserList(textBox1.Text,controler);
+            InputsForm fdus = new myIS.InputsForm(controler);
+            fdus.setLabel(textBox1.Text);
             this.Hide();
             fdus.Show();
         }
