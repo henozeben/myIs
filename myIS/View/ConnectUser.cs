@@ -21,9 +21,7 @@ namespace myIS
             controler = c;
             InitializeComponent();
             password.UseSystemPasswordChar = true;
-            password.Text = "123";
-            maskedTextBox1.Text = "gmail.com";
-            id.Text = "hanen1711";
+           
 
         }
 
